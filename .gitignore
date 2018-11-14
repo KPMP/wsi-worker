@@ -1,2 +1,3 @@
-data/*
+data-in/*
+data-out/*
 *.swp

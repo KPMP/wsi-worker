@@ -1,12 +1,15 @@
-- WSI Pipeline
+WSI Pipeline
+------------
 
 This repository illustrates the pipeline for generating DeepZoom images from SVS.
 
--  libvips
+Run on OSX
+----------
 
-This is our encoding library: https://jcupitt.github.io/libvips/
-# Install on OSX with homebrew: brew install vips
-# Install on Windows: find the downloadable exe on the Github
-
-
+1. Install homebrew if you haven't installed it already.
+2. `brew up`
+3. `brew install vips --with-openslide`
+4. `vips dzsave data-in/my-huge-wsi.svs my-huge-slide`
+5. Wait about an hour
+6. The generated DZI and levels will be created with the prefix `my-huge-slide`
 
