@@ -14,14 +14,7 @@ LABEL ImageOS=$imageOS
 LABEL Version=$version
 
 # Install libvips dependencies, including OpenSlide
+# https://packages.debian.org/jessie/libvips-dev
 RUN apt-get update
-RUN apt-get install -y wget build-essential make cmake g++ libglib2.0-dev libcairo2-dev libgdk-pixbuf2.0-dev libtiff5 libtiff5-dev openslide-tools
-
-# Install OpenSlide from Github
-RUN wget https://github.com/libvips/libvips/releases/download/v8.7.0-alpha2/vips-8.7.0.tar.gz
-RUN tar -zxvf vips-8.7.0.tar.gz
-RUN cd /vips-8.7.0 && ./configure
-RUN cd /vips-8.7.0 && make
-RUN cd /vips-8.7.0 && make install
-RUN ldconfig
+RUN apt-get install -y libopenslide-dev libvips-dev libvips
 
