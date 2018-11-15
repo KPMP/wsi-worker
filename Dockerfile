@@ -25,6 +25,3 @@ RUN cd /vips-8.7.0 && make
 RUN cd /vips-8.7.0 && make install
 RUN ldconfig
 
-# COPY ./thin-install /root/thin-install
-# RUN /root/thin-install
-
