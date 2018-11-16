@@ -21,12 +21,9 @@ These instructions apply to the current Dockerfile, which assumes at `docker bui
 1. `cd wsi-pipeline`
 2. `docker build .`
 3. Get created image ID
-4. `docker run -v 8000:8000 -it <image ID> /bin/bash`
-5. `vips dzsave /data/wsi.svs /html/deepzoom`
-6. Wait
-7. Generated DZI and image folder will be created with `deepzoom` prefix
-8. `cd html`
-9. `node server.js`
-10. In your host's browser, `http://localhost:8000`
-11. OpenSeadragon will show your deepzoom WSI
+4. `docker run -p 8000:8000 -it <image ID> /bin/bash`
+5. `cd html`
+6. `node server.js`
+7. In your host's browser, `http://localhost:8000`
+8. OpenSeadragon will show your deepzoom WSI
 
