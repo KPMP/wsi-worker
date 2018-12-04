@@ -1,29 +1,26 @@
 WSI Pipeline
 ------------
 
-This repository illustrates the pipeline for generating DeepZoom images from SVS.  Try it one of two ways: on OSX or with the provided Dockerfile.
-
-Run on OSX
-----------
-
-1. [Install homebrew](https://brew.sh/) if you haven't installed it already.
-2. `brew up`
-3. `brew install vips --with-openslide`
-4. `vips dzsave data/big-file.svs big-file-deepzoom`
-5. Wait about an hour
-6. Generated DZI and image folder will be created with `big-file-deepzoom` prefix
+This repository illustrates the pipeline for generating DeepZoom images from SVS.
 
 Run on Docker
 -------------
 
-These instructions apply to the current Dockerfile, which assumes at `docker build .` -time that a file named `data-in/LNC00044_PAS_77649.svs` exists and is copyable into the image.  You can modify the Dockerfile to copy in a different source SVS to make your testing life easier.
+Before starting, make sure you have configured `.env` in the `docker` folder.
 
-1. `cd wsi-pipeline`
+1. `cd wsi-pipeline/docker/vips-worker-base`
 2. `docker build .`
 3. Get created image ID
-4. `docker run -p 8000:8000 -it <image ID> /bin/bash`
-5. `cd html`
-6. `node server.js`
-7. In your host's browser, `http://localhost:8000`
-8. OpenSeadragon will show your deepzoom WSI
+4. `cd ../vips-worker`
+5. Edit `Dockerfile` and set FROM to the vips-worker-base image ID
+6. `docker build .`
+7. Get created image ID
+8. `cd ..`
+9. Edit `docker-compose.yml` and set `ENV_WORKER_IMAGE_ID` to the vips-worker image ID
+10. `docker-compose up -d`
+11. `docker exec -it <created container ID> /bin/bash`
+12. In the Docker shell, `/exec/svs2dz <KPMP ID> <file name> <file ID>`
 
+An enterprising contributor could easily modify the vips-worker `Dockerfile` and `runjob` scripts to do some more intelligent logging, input parameter-handling, and maybe even file-watching in the `/data/job/in` folder.
+
+For now, this is but a humble container showing that our DeepZoom pipeline is within reach.
