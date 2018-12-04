@@ -29,6 +29,6 @@ Run on Docker: Build and Run
 11. `docker exec -it <created container ID> /bin/bash`
 12. In the Docker shell, `/exec/svs2dz <KPMP ID> <file name> <file ID>`
 
-An enterprising contributor could easily modify the vips-worker `Dockerfile` and `runjob` scripts to do some more intelligent logging, input parameter-handling, and maybe even file-watching in the `/data/job/in` folder.
+An enterprising contributor could easily modify the vips-worker `Dockerfile` and `runjob` scripts to do some more intelligent logging, input parameter-handling, and maybe even file-watching in the container's `/data/job/in` folder.
 
 For now, this is but a humble container showing that our DeepZoom pipeline is within reach.
