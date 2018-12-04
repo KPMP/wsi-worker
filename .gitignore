@@ -2,3 +2,4 @@ data-in/*
 data-out/*
 *.swp
 .DS_Store
+.env
