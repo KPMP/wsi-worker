@@ -16,7 +16,7 @@ Before starting, make sure you have configured `.env` in the `docker` folder.
 6. `docker build .`
 7. Get created image ID
 8. `cd ..`
-9. Edit `docker-compose.yml` and set `ENV_WORKER_IMAGE_ID` to the vips-worker image ID
+9. Edit `.env` and set `ENV_WORKER_IMAGE_ID` to the vips-worker image ID
 10. `docker-compose up -d`
 11. `docker exec -it <created container ID> /bin/bash`
 12. In the Docker shell, `/exec/svs2dz <KPMP ID> <file name> <file ID>`
