@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# TODO define some constants
+
+# Define some constants
 DID_ERROR=0
 WSI_ORIG_FILES_DIR=/data/knowledgeEnvironment/deepZoom
 JOB_IN_DIR=/data/job/in
@@ -11,7 +12,7 @@ print_error() {
   let "DID_ERROR+=1";
 }
 
-# TODO verify we have all correct inputs to command
+# Verify we have all correct inputs to command
 
 if   [[ -z "${ENV_WSI_LINK_FROM_DIR}" ]]; then
   print_error "ENV_WSI_LINK_FROM_DIR undefined";
@@ -33,14 +34,17 @@ if (( DID_ERROR > 0 )); then
   exit $DID_ERROR;
 fi 
 
-# TODO call vips to convert our SVS to deepzoom format in correct destination
-# RUN vips dzsave /wsi.svs /html/deepzoom
 
+# Call vips to convert our SVS to deepzoom format in correct destination
 mkdir -p $WSI_ORIG_FILES_DIR/files_$1
 echo "vips dzsave $JOB_IN_DIR/$2.svs $WSI_ORIG_FILES_DIR/files_$1/$2"
 vips dzsave $JOB_IN_DIR/$2.svs $WSI_ORIG_FILES_DIR/files_$1/$2
 
-# TODO append symlink creation command to output file
+
+# TODO copy a consistently-well-sized DZ file out as our thumbnail
+cp $WSI_ORIG_FILES_DIR/files_$1/$2_files/8/0_0.jpeg $WSI_ORIG_FILES_DIR/files_$1/tn_$2.jpeg
+
+# Append symlink creation command to output file
 mkdir -p $JOB_OUT_DIR/svs2dz
 
 if ! [ -f $JOB_OUT_DIR/svs2dz/link.sh ]; then
@@ -60,6 +64,7 @@ cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
 if ! [ -L $3_files ]; then
   ln -s $ENV_WSI_LINK_FROM_DIR/files_$1/$2_files $3_files
   ln -s $ENV_WSI_LINK_FROM_DIR/$1.dzi $3.dzi
+  ln -s $ENV_WSI_LINK_FROM_DIR/files_$1/tn_$2.jpg tn_$3.jpeg
 fi
 
 EOT
