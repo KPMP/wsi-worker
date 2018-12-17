@@ -1,0 +1,32 @@
+#!/bin/bash
+JOB_OUT_DIR=/Users/rossmith/prj/kpmp/tmp
+WSI_LINK_FROM_DIR=../knowledgeEnvironment/deepZoom
+
+link_files() {
+  # Append symlink creation command to output file
+  mkdir -p $JOB_OUT_DIR/svs2dz
+  
+  if ! [ -f $JOB_OUT_DIR/svs2dz/link.sh ]; then
+    cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
+  #!/bin/bash
+  ####
+  # link.sh
+  #### 
+  #
+  # Creates Deep Zoom asset symlinks into the knowledge environment, associating DZ files by the package file ID given when svs2dz job was run.
+  # This command must be run in the folder where you want the links created.
+  #
+EOT
+  fi
+  
+  cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
+  if ! [ -L $3_files ]; then
+    ln -s $WSI_LINK_FROM_DIR/files_$1/$2_files $3_files
+    ln -s $WSI_LINK_FROM_DIR/files_$1/$2.dzi $3.dzi
+    ln -s $WSI_LINK_FROM_DIR/files_$1/tn_$2.jpeg tn_$3.jpeg
+  fi
+  
+EOT
+}
+
+link_files $1 $2 $3
