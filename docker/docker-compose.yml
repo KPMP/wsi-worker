@@ -1,19 +1,20 @@
 version: "3"
 
 services:
-  worker:
-    container_name: vips-worker
-    image: ${ENV_WORKER_IMAGE_ID} 
+  wsi-worker:
+    container_name: wsi-worker
+    image: ${ENV_IMAGE}
     environment:
-      - ENV_WSI_LINK_FROM_DIR=${ENV_WSI_LINK_FROM_DIR}
+      - ENV_KE_DZI_SRC_DIR=${ENV_KE_DZI_SRC_DIR}
+      - ENV_KE_DZI_DST_DIR=${ENV_KE_DZI_DST_DIR}
     volumes:
-      - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
+      - ${ENV_KE_DZI_SRC_DIR}:/data/knowledgeEnvironment/deepZoom
       - ${ENV_JOB_IN_DIR}:/data/job/in
       - ${ENV_JOB_OUT_DIR}:/data/job/out
     networks:
       local:
         aliases:
-          - vips-worker
+          - wsi-worker
 
 networks:
   local:

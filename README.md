@@ -8,7 +8,7 @@ Run on Docker: .env File
 
 Before starting, make sure you have configured `.env` in the `docker` folder.
 That means setting the following:
-1. `ENV_WORKER_IMAGE_ID`: the image ID of the vips-worker.  You will build this and get an image ID in the Build and Run section.
+1. `ENV_IMAGE`: the image ID of the vips-worker.  You will build this and get an image ID in the Build and Run section.
 1. `ENV_WSI_ORIG_FILES_DIR`: mounted by the container, this is an absolute path on the host system where the created DeepZoom assets will be stored.
 2. `ENV_JOB_IN_DIR`: mounted by the container, this is an absolute path on the host system where input SVS files will be found.
 3. `ENV_JOB_OUT_DIR`: mounted by the container, this is an absolute path on the host where job-related output will be created.  Today, the only file created here is `svs2dz/link.sh`, a runnable bash script to create symlinks into the DZ files in `ENV_WSI_ORIG_FILES_DIR`.

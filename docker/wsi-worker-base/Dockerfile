@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ARG imageName="vips-worker-base"
+ARG imageName="wsi-worker-base"
 ARG imageDescription="OpenSlide VIPS worker base image"
 ARG imageType="base"
 ARG imageOS="ubuntu"
