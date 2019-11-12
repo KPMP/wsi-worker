@@ -1,10 +1,17 @@
-#WSI Worker
+# WSI Worker
 
 These worker scripts handle SVS and DZI operations for the DPR.
 
 ## scripts/run-wsi-worker.sh
 
 This script converts an SVS to DZI and links the converted assets into the DPR's file structure.
+*TODO: Also update the database.  This worker does not touch delphinus-data yet.*
+
+### Example Run
+
+Once an SVS file is dropped into the directory indicated by `ENV_JOB_IN_DIR`, this command will convert the SVS to DZI and link it in the file system.
+
+`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
 
 ### Inputs
 This script accepts 3 arguments and a `.env` file.
@@ -34,11 +41,3 @@ This script accepts 3 arguments and a `.env` file.
 - `cd wsi-worker/scripts`
 - `cp .env.example .env`
 - Update environment configs
-
-### Example Run
-
-Once an SVS file is dropped into the directory indicated by `ENV_JOB_IN_DIR`, this command will convert the SVS to DZI and link it in the file system.
-
-`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
-
-*TODO: Also update the database.  This worker does not touch delphinus-data yet.*
