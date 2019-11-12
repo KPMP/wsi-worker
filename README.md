@@ -1,34 +1,44 @@
-WSI Pipeline
-------------
+#WSI Worker
 
-This repository illustrates the pipeline for generating DeepZoom images from SVS.
+These worker scripts handle SVS and DZI operations for the DPR.
 
-Run on Docker: .env File
-------------------------
+## scripts/run-wsi-worker.sh
 
-Before starting, make sure you have configured `.env` in the `docker` folder.
-That means setting the following:
-1. `ENV_IMAGE`: the image ID of the vips-worker.  You will build this and get an image ID in the Build and Run section.
-1. `ENV_WSI_ORIG_FILES_DIR`: mounted by the container, this is an absolute path on the host system where the created DeepZoom assets will be stored.
-2. `ENV_JOB_IN_DIR`: mounted by the container, this is an absolute path on the host system where input SVS files will be found.
-3. `ENV_JOB_OUT_DIR`: mounted by the container, this is an absolute path on the host where job-related output will be created.  Today, the only file created here is `svs2dz/link.sh`, a runnable bash script to create symlinks into the DZ files in `ENV_WSI_ORIG_FILES_DIR`.
+This script converts an SVS to DZI and links the converted assets into the DPR's file structure.
 
-Run on Docker: Build and Run
-----------------------------
+### Inputs
+This script accepts 3 arguments and a `.env` file.
 
-1. `cd wsi-pipeline/docker/vips-worker-base`
-2. `docker build .`
-3. Get created image ID
-4. `cd ../vips-worker`
-5. Edit `Dockerfile` and set FROM to the vips-worker-base image ID
-6. `docker build .`
-7. Get created image ID
-8. `cd ..`
-9. Edit `.env` and set `ENV_WORKER_IMAGE_ID` to the vips-worker image ID
-10. `docker-compose up -d`
-11. `docker exec -it <created container ID> /bin/bash`
-12. In the Docker shell, `/exec/svs2dz <KPMP ID> <file name> <file ID>`
+#### Arguments
+1. KPMP ID
+2. SVS filename without the `.svs` extension
+3. Package File ID from the Data Lake
 
-An enterprising contributor could easily modify the vips-worker `Dockerfile` and `runjob` scripts to do some more intelligent logging, input parameter-handling, and maybe even file-watching in the container's `/data/job/in` folder.
+#### .env File
+1. `ENV_IMAGE`: defaults to `kingstonduo/wsi-worker`
+2. `ENV_LINK_SRC_DIR`: container KE data directory, defaults to `/data/knowledgeEnvironment/deepZoom`
+3. `ENV_LINK_DST_DIR`: container DPR data directory, defaults to `/data/deepZoomImages`
+4. `ENV_LINK_SRC_DIR_HOST`: Host KE data directory, maps to `ENV_LINK_SRC_DIR`
+5. `ENV_LINK_DST_DIR_HOST`: Host DPR data directory, maps to `ENV_LINK_DST_DIR`
+6. `ENV_JOB_IN_DIR`: the host directory holding the source SVS files to be handled by the job
+7. `ENV_JOB_OUT_DIR`: the host directory to hold `link.sh` and `error.txt` if errors are logged
 
-For now, this is but a humble container showing that our DeepZoom pipeline is within reach.
+### Outputs
+1. `ENV_JOB_OUT_DIR` receives byproduct files used in the job
+2. `ENV_LINK_SRC_DIR` receives the DZI assets from the SVS conversion
+2. `ENV_LINK_DST_DIR` gets symlinks to DZI assets stored in the `ENV_LINK_SRC_DIR`
+
+### First-Time Set-Up
+
+- `git clone https://github.com/kpmp/wsi-worker`
+- `cd wsi-worker/scripts`
+- `cp .env.example .env`
+- Update environment configs
+
+### Example Run
+
+Once an SVS file is dropped into the directory indicated by `ENV_JOB_IN_DIR`, this command will convert the SVS to DZI and link it in the file system.
+
+`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
+
+*TODO: Also update the database.  This worker does not touch delphinus-data yet.*
