@@ -9,7 +9,7 @@ var slideName = process.argv[3];
 var fileUUID = process.argv[4];
 var udpates = [];
 
-const createUpdates = function(db, callback) {
+const addAndUpdateParticipants = function(db, callback) {
 	var participantCollection = db.collection("patients");
 	var query = { kpmp_id: kpmpId };
 
@@ -30,6 +30,17 @@ const createUpdates = function(db, callback) {
 				participantCollection.update({ _id: doc._id }, { $set: { slides: slides }});
 			}
 		});
+		if (docs.length === 0) {
+			var participantRecord = {
+				kpmpId: kpmpId,
+				label: kpmpId,
+				slides: [ {
+					_id: fileUUID,
+					slideName: slideName
+				}]
+			};
+			participantCollection.insertOne(participantRecord);
+		}
 		callback();
 	});
 
@@ -41,7 +52,7 @@ MongoClient.connect(url, function(err, client) {
 	
 	const db = client.db(dbName);
 	
-	createUpdates(db, function() {
+	addAndUpdateParticipants(db, function() {
 		client.close();
 	});
 
