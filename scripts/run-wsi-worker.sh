@@ -12,6 +12,7 @@ mkdir -p ${ENV_LINK_DST_DIR_HOST}
 
 docker run \
   --env-file .env \
+  --network delphinus_local \
   -v ${ENV_LINK_SRC_DIR_HOST}:${ENV_LINK_SRC_DIR} \
   -v ${ENV_LINK_DST_DIR_HOST}:${ENV_LINK_DST_DIR} \
   -v ${ENV_JOB_IN_DIR}:/data/job/in \
