@@ -16,5 +16,7 @@ LABEL Version=$version
 COPY svs2dz /usr/sbin/svs2dz
 COPY runjob /usr/sbin/runjob
 COPY svs2dz-functions.sh /usr/sbin/svs2dz-functions.sh
+COPY generate_mongo_records.js /usr/sbin/generate_mongo_records.js
+COPY package.json /usr/sbin/package.json
 
 ENTRYPOINT ["svs2dz"]

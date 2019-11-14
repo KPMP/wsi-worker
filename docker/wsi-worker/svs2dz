@@ -3,16 +3,19 @@
 source /usr/sbin/svs2dz-functions.sh
 assert_no_errors "!!! source load failure"
 
-validate_args $1 $2 $3
+#validate_args $1 $2 $3
 # no assertion needed; validate_args works differently
 
-call_vips $1 $2 $3
-assert_no_errors "!!! call_vips failure"
+#call_vips $1 $2 $3
+#assert_no_errors "!!! call_vips failure"
 
-update_link_file $1 $2 $3
-assert_no_errors "!!! update_link_file failure"
+#update_link_file $1 $2 $3
+#assert_no_errors "!!! update_link_file failure"
 
-run_link_file
-assert_no_errors "!!! run_link_file failure"
+#run_link_file
+#assert_no_errors "!!! run_link_file failure"
+
+generate_mongo_records $1 $2 $3
+assert_no_errors "!!! generate_mongo_records"
 
 echo "+++ done"
