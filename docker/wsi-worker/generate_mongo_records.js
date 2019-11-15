@@ -7,7 +7,6 @@ const dbName = 'knowledgeEnvironment';
 var kpmpId = process.argv[2];
 var slideName = process.argv[3];
 var fileUUID = process.argv[4];
-var udpates = [];
 
 const addAndUpdateParticipants = function(db, callback) {
 	var participantCollection = db.collection("patients");
