@@ -15,4 +15,7 @@ assert_no_errors "!!! update_link_file failure"
 run_link_file
 assert_no_errors "!!! run_link_file failure"
 
+generate_mongo_records $1 $2 $3
+assert_no_errors "!!! generate_mongo_records"
+
 echo "+++ done"

@@ -101,3 +101,9 @@ run_link_file() {
   chmod +x $ENV_LINK_DST_DIR/link.sh
   $ENV_LINK_DST_DIR/link.sh
 }
+
+generate_mongo_records() {
+  cd /usr/sbin
+  npm install
+  node generate_mongo_records.js $1 $2 $3
+}
