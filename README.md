@@ -1,21 +1,23 @@
 # WSI Worker
 
-This worker script handls SVS and DZI operations for the DPR.  This repository can be used to store further image processing workers.
+This script converts one SVS to a DZI pyramid and links the converted assets into the DPR's file structure.
 
-## scripts/run-wsi-worker.sh
+## Building the Docker Image
+1. Build the base image in `docker/wsi-worker-base`
+2. Tag with `kingstonduo/wsi-worker-base` (plus version) and push
+3. Build the worker image in `docker/wsi-worker`
+4. Tag with `kingstonduo/wsi-worker` (plus version) and push
 
-This script converts an SVS to DZI and links the converted assets into the DPR's file structure.
-
-*TODO: Also update the database.  This worker does not touch delphinus-data yet.*
+### First Time Set-Up
+To get started quickly, create a `.env` file in `wsi-worker/scripts` and then call `./run-wsi-worker.sh`.
+To initialize the `.env` file, copy `wsi-worker/scripts/.env.example` and modify it to suit your environment (see ".env File" below).
 
 ### Example Run
+1. Put an SVS file into the host's "SVS file drop zone" directory indicated by `ENV_JOB_IN_DIR`
+2. `cd wsi-worker/scripts` to make that your working directory with your `.env` file
+3. Run the below command to convert the SVS to DZI and link it in the file system
 
-Once an SVS file is dropped into the directory indicated by `ENV_JOB_IN_DIR`, this command will convert the SVS to DZI and link it in the file system.
-
-`wsi-worker/scripts/run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
-
-### Inputs
-This script accepts 3 arguments and a `.env` file.
+`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
 
 #### Arguments
 1. KPMP ID
@@ -35,10 +37,3 @@ This script accepts 3 arguments and a `.env` file.
 1. `ENV_JOB_OUT_DIR` receives byproduct files used in the job
 2. `ENV_LINK_SRC_DIR` receives the DZI assets from the SVS conversion
 2. `ENV_LINK_DST_DIR` gets symlinks to DZI assets stored in the `ENV_LINK_SRC_DIR`
-
-### First-Time Set-Up
-
-- `git clone https://github.com/kpmp/wsi-worker`
-- `cd wsi-worker/scripts`
-- `cp .env.example .env`
-- Update environment configs
