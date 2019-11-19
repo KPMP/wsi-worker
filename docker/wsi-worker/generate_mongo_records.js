@@ -33,7 +33,7 @@ const addAndUpdateParticipants = function(db, callback) {
 				let added = false;
 
 				slides.forEach(slide => {
-					if(slide.slideName === slideName || slide._id === fileUUID) {
+					if(slide.slideName === slideName) {
 						exists = true;
 					}
 				});
@@ -42,10 +42,10 @@ const addAndUpdateParticipants = function(db, callback) {
 					slides.push({
 						_id: fileUUID,
 						slideName: slideName,
-						stain: stainsByType[stainType]._id
+						stain: stainsByType[stainType]
 					});
 
-                    console.log("--- adding new slide, fileUUID: " + fileUUID);
+					console.log("--- adding new slide, fileUUID: " + fileUUID);
 					participantCollection.update({ _id: doc._id }, { $set: { slides: slides }});
 					added = true;
 				}
@@ -62,7 +62,7 @@ const addAndUpdateParticipants = function(db, callback) {
 					slides: [ {
 						_id: fileUUID,
 						slideName: slideName,
-                        stain: stainsByType[stainType]._id
+						stain: stainsByType[stainType]
 					}]
 				};
 
