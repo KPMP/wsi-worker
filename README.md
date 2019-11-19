@@ -1,6 +1,6 @@
 # WSI Worker
 
-This script converts one SVS to a DZI pyramid and links the converted assets into the DPR's file structure.
+This script converts one SVS to a DZI pyramid, links the converted assets into the DPR's file structure, and updates the DPR database.
 
 ## Building the Docker Image
 1. Build the base image in `docker/wsi-worker-base`
@@ -15,14 +15,16 @@ To initialize the `.env` file, copy `wsi-worker/scripts/.env.example` and modify
 ### Example Run
 1. Put an SVS file into the host's "SVS file drop zone" directory indicated by `ENV_JOB_IN_DIR`
 2. `cd wsi-worker/scripts` to make that your working directory with your `.env` file
-3. Run the below command to convert the SVS to DZI and link it in the file system
+3. Start up your environment's docker-compose under `heavens-docker/delphinus`, otherwise the DB update will fail
+4. Run the below command to convert the SVS to DZI and link it in the file system and to the DPR database
 
-`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123`
+`./run-wsi-worker.sh KPMP-Ex1 KPMP-Ex1_PAS_1of1 abc123 pas`
 
 #### Arguments
 1. KPMP ID
 2. SVS filename without the `.svs` extension
 3. Package File ID from the Data Lake
+4. [Optional] stain type.  Values are 'he', 'pas', 'silver', and  'tri'.  Defaults to 'pas'
 
 #### .env File
 1. `ENV_IMAGE`: defaults to `kingstonduo/wsi-worker`
@@ -36,4 +38,5 @@ To initialize the `.env` file, copy `wsi-worker/scripts/.env.example` and modify
 ### Outputs
 1. `ENV_JOB_OUT_DIR` receives byproduct files used in the job
 2. `ENV_LINK_SRC_DIR` receives the DZI assets from the SVS conversion
-2. `ENV_LINK_DST_DIR` gets symlinks to DZI assets stored in the `ENV_LINK_SRC_DIR`
+3. `ENV_LINK_DST_DIR` gets symlinks to DZI assets stored in the `ENV_LINK_SRC_DIR`
+4. `delphinus-mongodb` container gets updated participant and slide records in the "patients" collection
