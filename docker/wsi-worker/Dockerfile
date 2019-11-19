@@ -1,4 +1,4 @@
-FROM kingstonduo/wsi-worker-base
+FROM kingstonduo/wsi-worker-base:latest
 
 ARG imageName="wsi-worker"
 ARG imageDescription="Compiles SVS images to DeepZoom and links in DPR"
@@ -17,5 +17,7 @@ COPY svs2dz /usr/sbin/svs2dz
 COPY svs2dz-functions.sh /usr/sbin/svs2dz-functions.sh
 COPY generate_mongo_records.js /usr/sbin/generate_mongo_records.js
 COPY package.json /usr/sbin/package.json
+
+RUN cd /usr/sbin && npm install
 
 ENTRYPOINT ["svs2dz"]

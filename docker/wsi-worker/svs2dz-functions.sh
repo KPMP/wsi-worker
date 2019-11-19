@@ -86,7 +86,7 @@ EOT
   fi
   
   cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
-  if ! [ -L $3_files ]; then
+  if ! [ -L $ENV_LINK_DST_DIR/$3_files ]; then
     ln -s $ENV_LINK_SRC_DIR/files_$1/$2_files $ENV_LINK_DST_DIR/$3_files
     ln -s $ENV_LINK_SRC_DIR/files_$1/$2.dzi $ENV_LINK_DST_DIR/$3.dzi
     ln -s $ENV_LINK_SRC_DIR/files_$1/tn_$2.jpeg $ENV_LINK_DST_DIR/tn_$3.jpeg
@@ -103,7 +103,5 @@ run_link_file() {
 }
 
 generate_mongo_records() {
-  cd /usr/sbin
-  npm install
-  node generate_mongo_records.js $1 $2 $3
+  node /usr/sbin/generate_mongo_records.js $1 $2 $3
 }
