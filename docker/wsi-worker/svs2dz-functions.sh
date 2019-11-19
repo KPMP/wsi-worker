@@ -8,10 +8,10 @@ JOB_OUT_DIR=/data/job/out
 print_help() {
   cat << EOL
 --- Command help
-Usage: svs2dz "KPMP_ID" "FILENAME_NO_EXTENSION" "PKG_FILE_ID"
+Usage: svs2dz "KPMP_ID" "FILENAME_NO_EXTENSION" "PKG_FILE_ID" ["STAIN_TYPE"]
 All arguments should be enclosed in double-quotes to escape spaces.
-Example: svs2dz KPMP-Ex1 KPMP-Ex1_TRI_1of1 b9f7c729-8370-4f8d-9753-4a36e8ae57a4
-... The above example creates symlinks at <ENV_WSE_LINK_FROM_DIR>/files_KPMP-Ex1/KPMP-Ex1_TRI_1of1
+Example: svs2dz "KPMP-Ex1" "KPMP-Ex1_TRI_1of1" "b9f7c729-8370-4f8d-9753-4a36e8ae57a4" "TRI"
+... The above example creates symlinks at <ENV_WSE_LINK_FROM_DIR>/files_KPMP-Ex1/KPMP-Ex1_TRI_1of1, stain type Trichrome
 EOL
 }
 
@@ -52,6 +52,11 @@ validate_args() {
     print_error "!!! arg 3 must be file ID"
   fi
 
+  if [[ -z $4 ]]; then
+    echo "... optional stain not passed; defaulting to type 'pas'"
+    4=pas
+  fi
+
   if (( DID_ERROR > 0 )); then
     print_help
     exit $DID_ERROR
@@ -86,7 +91,7 @@ EOT
   fi
   
   cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
-  if ! [ -L $3_files ]; then
+  if ! [ -L $ENV_LINK_DST_DIR/$3_files ]; then
     ln -s $ENV_LINK_SRC_DIR/files_$1/$2_files $ENV_LINK_DST_DIR/$3_files
     ln -s $ENV_LINK_SRC_DIR/files_$1/$2.dzi $ENV_LINK_DST_DIR/$3.dzi
     ln -s $ENV_LINK_SRC_DIR/files_$1/tn_$2.jpeg $ENV_LINK_DST_DIR/tn_$3.jpeg
@@ -103,7 +108,5 @@ run_link_file() {
 }
 
 generate_mongo_records() {
-  cd /usr/sbin
-  npm install
-  node generate_mongo_records.js $1 $2 $3
+  node /usr/sbin/generate_mongo_records.js $1 $2 $3 $4
 }
