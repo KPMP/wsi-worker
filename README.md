@@ -24,7 +24,7 @@ To initialize the `.env` file, copy `wsi-worker/scripts/.env.example` and modify
 1. KPMP ID
 2. SVS filename without the `.svs` extension
 3. Package File ID from the Data Lake
-4. [Optional] stain type.  Values are 'he', 'pas', 'silver', and  'tri'.  Defaults to 'pas'
+4. [Optional] stain type.  Values are 'he', 'pas', 'silver', 'tri', 'frz', 'tol' and 'cr'.  Defaults to 'pas'
 
 #### .env File
 1. `ENV_IMAGE`: defaults to `kingstonduo/wsi-worker`
