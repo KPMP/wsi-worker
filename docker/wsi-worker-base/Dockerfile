@@ -15,6 +15,9 @@ LABEL Version=$versioni
 
 ENV NODE_VERSION 13.1.0
 
+ENV TZ=America/Detroit
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install libvips dependencies, including OpenSlide
 # https://packages.debian.org/jessie/libvips-dev
 RUN apt-get update

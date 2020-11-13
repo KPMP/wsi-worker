@@ -39,15 +39,20 @@ const addAndUpdateParticipants = function(db, callback) {
 				});
 
 				if (!exists) {
-					slides.push({
-						_id: fileUUID,
-						slideName: slideName,
-						stain: stainsByType[stainType]
-					});
+					if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
 
-					console.log("--- adding new slide, fileUUID: " + fileUUID);
-					participantCollection.update({ _id: doc._id }, { $set: { slides: slides }});
-					added = true;
+						slides.push({
+							_id: fileUUID,
+							slideName: slideName,
+							stain: stainsByType[stainType]
+						});
+
+						console.log("--- adding new slide, fileUUID: " + fileUUID);
+						participantCollection.update({ _id: doc._id }, { $set: { slides: slides }});
+						added = true;
+					} else {
+						console.log("***** ERROR: Unable to find stain type *****");
+					}
 				}
 
 				if(!added) {
@@ -56,18 +61,23 @@ const addAndUpdateParticipants = function(db, callback) {
 			});
 
 			if (docs.length === 0) {
-				let participantRecord = {
-					kpmp_id: kpmpId,
-					label: kpmpId,
-					slides: [ {
-						_id: fileUUID,
-						slideName: slideName,
-						stain: stainsByType[stainType]
-					}]
-				};
+				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
 
-				console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
-				participantCollection.insertOne(participantRecord);
+					let participantRecord = {
+						kpmp_id: kpmpId,
+						label: kpmpId,
+						slides: [ {
+							_id: fileUUID,
+							slideName: slideName,
+							stain: stainsByType[stainType]
+						}]
+					};
+
+					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
+					participantCollection.insertOne(participantRecord);
+				} else {
+					console.log("***** ERROR: Unable to find stain type *****");
+				}
 			}
 			callback();
 		});
