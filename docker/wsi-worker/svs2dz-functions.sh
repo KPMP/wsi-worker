@@ -68,7 +68,6 @@ call_vips() {
 
   echo "--- vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2"
   vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2
-
   # Copy a consistently-well-sized DZ file out as our thumbnail
   cp $ENV_LINK_SRC_DIR/files_$1/$2_files/8/0_0.jpeg $ENV_LINK_SRC_DIR/files_$1/tn_$2.jpeg
 }
@@ -107,6 +106,10 @@ run_link_file() {
   $ENV_LINK_DST_DIR/link.sh
 }
 
+extract_metadata() {
+  python3 /usr/sbin/extract_metadata.py $JOB_IN_DIR/$2.svs $JOB_OUT_DIR/metadata.json
+}
+
 generate_mongo_records() {
-  node /usr/sbin/generate_mongo_records.js $1 $2 $3 $4
+  node /usr/sbin/generate_mongo_records.js $1 $2 $3 $4 $JOB_OUT_DIR/metadata.json
 }

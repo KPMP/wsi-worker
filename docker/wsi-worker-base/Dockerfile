@@ -25,3 +25,6 @@ RUN apt-get -y install libopenslide-dev libvips-dev libvips \
 	&& apt-get -y install curl dirmngr apt-transport-https lsb-release ca-certificates \
 	&& apt-get -y install nodejs npm
 RUN update-alternatives --install /usr/bin/node node /usr/bin/nodejs 12
+
+RUN apt-get -y install software-properties-common && add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get -y install python3.9 && apt-get install -y python3-pip && pip install openslide-python
