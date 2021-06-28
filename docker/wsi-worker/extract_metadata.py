@@ -14,7 +14,8 @@ for properties in slide.properties:
     if '.' in properties:
         subJson = properties.split('.')
         mainKey = subJson[0]
-        subkey = subJson[1]
+        subkey = subJson[1].replace('-', '_')
+
         if mainKey in metadata:
             metadata[mainKey][subkey] = slide.properties[properties]
         else:
