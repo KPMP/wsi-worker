@@ -38,6 +38,9 @@ const addAndUpdateParticipants = function (db, callback) {
 
 					slides.forEach(slide => {
 						if (slide.slideName === slideName) {
+							slide = slide['metadata'] = metadata;
+							participantCollection.update({_id: doc._id }, { $set: { slides: slides }});
+							console.log("updated slide with metadata");
 							exists = true;
 						}
 					});
