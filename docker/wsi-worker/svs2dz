@@ -3,7 +3,7 @@
 source /usr/sbin/svs2dz-functions.sh
 assert_no_errors "!!! source load failure"
 
-validate_args $1 $2 $3 $4
+validate_args $1 $2 $3 $4 $5
 # no assertion needed; validate_args works differently
 
 call_vips $1 $2 $3 $4
