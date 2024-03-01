@@ -10,8 +10,8 @@ print_help() {
 --- Command help
 Usage: svs2dz "KPMP_ID" "FILENAME_NO_EXTENSION" "PKG_FILE_ID" "SLIDE_TYPE" ["STAIN_TYPE"]
 All arguments should be enclosed in double-quotes to escape spaces.
-Example: svs2dz "KPMP-Ex1" "KPMP-Ex1_TRI_1of1" "b9f7c729-8370-4f8d-9753-4a36e8ae57a4" "LM" "TRI"
-... The above example creates symlinks at <ENV_WSE_LINK_FROM_DIR>/files_KPMP-Ex1/KPMP-Ex1_TRI_1of1, Light Microscopic Whole Slide Image, stain type Trichrome
+Example: svs2dz "KPMP-Ex1" "KPMP-Ex1_TRI_1of1" "b9f7c729-8370-4f8d-9753-4a36e8ae57a4" "IF" "TRI"
+... The above example creates symlinks at <ENV_WSE_LINK_FROM_DIR>/files_KPMP-Ex1/KPMP-Ex1_TRI_1of1, slide type Immunofluorescence, stain type Trichrome
 EOL
 }
 
