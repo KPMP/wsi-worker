@@ -11,10 +11,13 @@ const fileUUID = process.argv[4];
 const slideType = process.argv[5];
 const stainType = process.argv[6];
 const metadataFile = process.argv[7];
-let rawdata = fs.readFileSync(metadataFile);
-let metadata = JSON.parse(rawdata);
 
 const addAndUpdateParticipants = function (db, callback) {
+	let metadata = null;
+	if (slideType === "LM" && fs.existsSync(metadataFile)) {
+		let rawdata = fs.readFileSync(metadataFile);
+		metadata = JSON.parse(rawdata);
+	}
 
 	let stainCollection = db.collection("stains");
 
@@ -53,7 +56,7 @@ const addAndUpdateParticipants = function (db, callback) {
 					let added = false;
 
 					slides.forEach(slide => {
-						if (slide.slideName === slideName) {
+						if (slideType === "LM" && slide.slideName === slideName) {
 							slide = slide['metadata'] = metadata;
 							participantCollection.update({_id: doc._id }, { $set: { slides: slides }});
 							console.log("updated slide with metadata");
@@ -63,14 +66,23 @@ const addAndUpdateParticipants = function (db, callback) {
 
 					if (!exists) {
 						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-
-							slides.push({
-								_id: fileUUID,
-								slideName: slideName,
-								metadata: metadata,
-								stain: stainsByType[stainType],
-								slideType: slideTypeFull
-							});
+							if (slideType === "LM") {
+								slides.push({
+									_id: fileUUID,
+									slideName: slideName,
+									metadata: metadata,
+									stain: stainsByType[stainType],
+									slideType: slideTypeFull
+								});
+							}
+							else {
+								slides.push({
+									_id: fileUUID,
+									slideName: slideName,
+									stain: stainsByType[stainType],
+									slideType: slideTypeFull
+								});
+							}
 
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
@@ -98,11 +110,13 @@ const addAndUpdateParticipants = function (db, callback) {
 						slides: [{
 							_id: fileUUID,
 							slideName: slideName,
-							metadata: metadata,
 							stain: stainsByType[stainType],
 							slideType: slideTypeFull
 						}]
 					};
+					if (slideType === "LM") {
+						participantRecord.slides[0].metadata = metadata;
+					}
 
 					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
 					participantCollection.insertOne(participantRecord, function () {
