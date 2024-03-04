@@ -8,8 +8,9 @@ const dbName = 'knowledgeEnvironment';
 const kpmpId = process.argv[2];
 const slideName = process.argv[3];
 const fileUUID = process.argv[4];
-const stainType = process.argv[5];
-const metadataFile = process.argv[6];
+const slideType = process.argv[5];
+const stainType = process.argv[6];
+const metadataFile = process.argv[7];
 let rawdata = fs.readFileSync(metadataFile);
 let metadata = JSON.parse(rawdata);
 
@@ -24,6 +25,21 @@ const addAndUpdateParticipants = function (db, callback) {
 		stainDocuments.forEach(stain => {
 			stainsByType[stain.type] = stain;
 		});
+
+		let slideTypeFull = "";
+		switch (slideType.toUpperCase()) {
+			case "LM":
+				slideTypeFull = "(LM) Light Microscopy";
+				break;
+			case "EM":
+				slideTypeFull = "(EM) Electron Microscopy";
+				break;
+			case "IF":
+				slideTypeFull = "(IF) Immunofluorescence";
+				break;
+			default:
+				break;
+		}
 
 		let participantCollection = db.collection("patients");
 
@@ -52,7 +68,8 @@ const addAndUpdateParticipants = function (db, callback) {
 								_id: fileUUID,
 								slideName: slideName,
 								metadata: metadata,
-								stain: stainsByType[stainType]
+								stain: stainsByType[stainType],
+								slideType: slideTypeFull
 							});
 
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
@@ -82,7 +99,8 @@ const addAndUpdateParticipants = function (db, callback) {
 							_id: fileUUID,
 							slideName: slideName,
 							metadata: metadata,
-							stain: stainsByType[stainType]
+							stain: stainsByType[stainType],
+							slideType: slideTypeFull
 						}]
 					};
 
