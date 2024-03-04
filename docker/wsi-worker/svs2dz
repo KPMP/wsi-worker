@@ -15,10 +15,13 @@ assert_no_errors "!!! update_link_file failure"
 run_link_file
 assert_no_errors "!!! run_link_file failure"
 
-extract_metadata $1 $2 $3 $4
-assert_no_errors "!!! extract_metadata_ failure"
+if [ $4 = "LM" ]
+then
+    extract_metadata $1 $2 $3 $4
+    assert_no_errors "!!! extract_metadata failure"
+fi
 
-generate_mongo_records $1 $2 $3 $4
+generate_mongo_records $1 $2 $3 $4 $5
 assert_no_errors "!!! generate_mongo_records failure"
 
 echo "+++ done"
