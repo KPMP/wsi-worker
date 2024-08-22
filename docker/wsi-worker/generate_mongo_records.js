@@ -122,6 +122,7 @@ const addAndUpdateParticipants = function (db, callback) {
 					participantCollection.insertOne(participantRecord, function () {
 						callback();
 					});
+				}
 				else if (slideType === "EM") {
 					let participantRecord = {
 						kpmp_id: kpmpId,
