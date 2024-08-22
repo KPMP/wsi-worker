@@ -65,25 +65,25 @@ const addAndUpdateParticipants = function (db, callback) {
 					});
 
 					if (!exists) {
-						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-							if (slideType === "LM") {
-								slides.push({
-									_id: fileUUID,
-									slideName: slideName,
-									metadata: metadata,
-									stain: stainsByType[stainType],
-									slideType: slideTypeFull
-								});
-							}
-							else {
-								slides.push({
-									_id: fileUUID,
-									slideName: slideName,
-									stain: stainsByType[stainType],
-									slideType: slideTypeFull
-								});
-							}
-
+						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
+							slides.push({
+								_id: fileUUID,
+								slideName: slideName,
+								metadata: metadata,
+								stain: stainsByType[stainType],
+								slideType: slideTypeFull
+							});
+							console.log("--- adding new slide, fileUUID: " + fileUUID);
+							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
+							added = true;
+						}
+						else if (slideType === "EM") {
+							slides.push({
+								_id: fileUUID,
+								slideName: slideName,
+								stain: stainsByType[stainType],
+								slideType: slideTypeFull
+							});
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
