@@ -58,7 +58,7 @@ validate_args() {
 
   if [[ -z $5 ]]; then
     echo "... optional stain not passed; defaulting to type 'pas'"
-    5=pas
+    5 = "pas"
   fi
 
   if (( DID_ERROR > 0 )); then
