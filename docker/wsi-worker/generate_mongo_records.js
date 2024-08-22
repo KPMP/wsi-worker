@@ -83,7 +83,6 @@ const addAndUpdateParticipants = function (db, callback) {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
-								stain: stainsByType[stainType],
 								slideType: slideTypeFull
 							});
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
@@ -105,8 +104,8 @@ const addAndUpdateParticipants = function (db, callback) {
 				callback()
 			});
 			if (docs.length === 0) {
-				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-
+				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
+					
 					let participantRecord = {
 						kpmp_id: kpmpId,
 						label: kpmpId,
@@ -114,12 +113,25 @@ const addAndUpdateParticipants = function (db, callback) {
 							_id: fileUUID,
 							slideName: slideName,
 							stain: stainsByType[stainType],
-							slideType: slideTypeFull
+							slideType: slideTypeFull,
+							metadata: metadata
 						}]
 					};
-					if (slideType === "LM") {
-						participantRecord.slides[0].metadata = metadata;
-					}
+
+					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
+					participantCollection.insertOne(participantRecord, function () {
+						callback();
+					});
+				else if (slideType === "EM") {
+					let participantRecord = {
+						kpmp_id: kpmpId,
+						label: kpmpId,
+						slides: [{
+							_id: fileUUID,
+							slideName: slideName,
+							slideType: slideTypeFull,
+						}]
+					};
 
 					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
 					participantCollection.insertOne(participantRecord, function () {
