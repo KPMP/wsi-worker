@@ -65,7 +65,7 @@ const addAndUpdateParticipants = function (db, callback) {
 					});
 
 					if (!exists) {
-						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
+						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType.toUpperCase() === "LM") {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
@@ -77,7 +77,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						}
-						else if (slideType === "EM") {
+						else if (slideType.toUpperCase() === "EM") {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
