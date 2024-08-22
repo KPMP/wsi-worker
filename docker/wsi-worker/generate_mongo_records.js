@@ -29,6 +29,7 @@ const addAndUpdateParticipants = function (db, callback) {
 			stainsByType[stain.type] = stain;
 		});
 
+		console.log(slideType);
 		let slideTypeFull = "";
 		switch (slideType.toUpperCase()) {
 			case "LM":
