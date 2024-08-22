@@ -29,9 +29,9 @@ const addAndUpdateParticipants = function (db, callback) {
 			stainsByType[stain.type] = stain;
 		});
 
-		console.log(slideType);
+		slideType = slideType.toUpperCase();
 		let slideTypeFull = "";
-		switch (slideType.toUpperCase()) {
+		switch (slideType) {
 			case "LM":
 				slideTypeFull = "(LM) Light Microscopy";
 				break;
@@ -57,16 +57,16 @@ const addAndUpdateParticipants = function (db, callback) {
 					let added = false;
 
 					slides.forEach(slide => {
-						if (slideType.toUpperCase() === "LM" && slide.slideName === slideName) {
+						if (slideType === "LM" && slide.slideName === slideName) {
 							slide = slide['metadata'] = metadata;
 							participantCollection.update({_id: doc._id }, { $set: { slides: slides }});
 							console.log("updated slide with metadata");
 							exists = true;
 						}
 					});
-
+					console.log(slideType);
 					if (!exists) {
-						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType.toUpperCase() === "LM") {
+						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
 							console.log("In LM")
 							slides.push({
 								_id: fileUUID,
@@ -79,7 +79,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						}
-						else if (slideType.toUpperCase() === "EM") {
+						else if (slideType === "EM") {
 							console.log("In EM")
 							slides.push({
 								_id: fileUUID,
@@ -127,6 +127,7 @@ const addAndUpdateParticipants = function (db, callback) {
 						callback();
 					});
 				} else {
+					console.log("Here")
 					console.log("***** ERROR: Unable to find stain type *****");
 					callback();
 				}
