@@ -70,8 +70,8 @@ validate_args() {
 call_vips() {
   mkdir -p $ENV_LINK_SRC_DIR/files_$1
   if [ "$4" == "EM" ] || [ "$4" == "em" ]; then
-    echo "--vips dsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2"
-    vips dsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2
+    echo "--vips dzsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2"
+    vips dzsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2
   else
     echo "--- vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2"
     vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2
