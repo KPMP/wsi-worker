@@ -69,9 +69,14 @@ validate_args() {
 
 call_vips() {
   mkdir -p $ENV_LINK_SRC_DIR/files_$1
-
-  echo "--- vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2"
-  vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2
+  if [ $4 -eq "EM" ] || [ $4 -eq "em"]; then
+    echo "--vips dsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2"
+    vips dsave $JOB_IN_DIR/$2.jpg $ENV_LINK_SRC_DIR/files_$1/$2
+  else
+    echo "--- vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2"
+    vips dzsave $JOB_IN_DIR/$2.svs $ENV_LINK_SRC_DIR/files_$1/$2
+  fi
+  
   # Copy a consistently-well-sized DZ file out as our thumbnail
   cp $ENV_LINK_SRC_DIR/files_$1/$2_files/8/0_0.jpeg $ENV_LINK_SRC_DIR/files_$1/tn_$2.jpeg
 }
