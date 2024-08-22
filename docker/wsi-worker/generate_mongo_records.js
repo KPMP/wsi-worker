@@ -56,7 +56,7 @@ const addAndUpdateParticipants = function (db, callback) {
 					let added = false;
 
 					slides.forEach(slide => {
-						if (slideType === "LM" && slide.slideName === slideName) {
+						if (slideType.toUpperCase() === "LM" && slide.slideName === slideName) {
 							slide = slide['metadata'] = metadata;
 							participantCollection.update({_id: doc._id }, { $set: { slides: slides }});
 							console.log("updated slide with metadata");
@@ -66,6 +66,7 @@ const addAndUpdateParticipants = function (db, callback) {
 
 					if (!exists) {
 						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType.toUpperCase() === "LM") {
+							console.log("In LM")
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
@@ -78,6 +79,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							added = true;
 						}
 						else if (slideType.toUpperCase() === "EM") {
+							console.log("In EM")
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
@@ -88,6 +90,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						} else {
+							console.log(slideType);
 							console.log("***** ERROR: Unable to find stain type *****");
 						}
 					}
