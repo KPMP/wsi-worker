@@ -63,10 +63,8 @@ const addAndUpdateParticipants = function (db, callback) {
 							exists = true;
 						}
 					});
-					console.log(slideType);
 					if (!exists) {
 						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
-							console.log("In LM")
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
@@ -79,7 +77,6 @@ const addAndUpdateParticipants = function (db, callback) {
 							added = true;
 						}
 						else if (slideType === "EM") {
-							console.log("In EM")
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
@@ -90,7 +87,6 @@ const addAndUpdateParticipants = function (db, callback) {
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						} else {
-							console.log(slideType);
 							console.log("***** ERROR: Unable to find stain type *****");
 						}
 					}
@@ -141,7 +137,6 @@ const addAndUpdateParticipants = function (db, callback) {
 						callback();
 					});
 				} else {
-					console.log(slideType)
 					console.log("***** ERROR: Unable to find stain type *****");
 					callback();
 				}
