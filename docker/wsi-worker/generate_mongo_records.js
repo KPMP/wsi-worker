@@ -9,7 +9,7 @@ const kpmpId = process.argv[2];
 const slideName = process.argv[3];
 const fileUUID = process.argv[4];
 const slideType = process.argv[5];
-const stainType = process.argv[6];
+const stainType = process.argv[6].toUpperCase();
 const metadataFile = process.argv[7];
 
 const addAndUpdateParticipants = function (db, callback) {
@@ -29,7 +29,6 @@ const addAndUpdateParticipants = function (db, callback) {
 			stainsByType[stain.type] = stain;
 		});
 
-		slideType = slideType.toUpperCase();
 		let slideTypeFull = "";
 		switch (slideType) {
 			case "LM":
