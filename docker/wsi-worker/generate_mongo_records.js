@@ -8,8 +8,8 @@ const dbName = 'knowledgeEnvironment';
 const kpmpId = process.argv[2];
 const slideName = process.argv[3];
 const fileUUID = process.argv[4];
-const slideType = process.argv[5];
-const stainType = process.argv[6].toUpperCase();
+const slideType = process.argv[5].toUpperCase();
+const stainType = process.argv[6];
 const metadataFile = process.argv[7];
 
 const addAndUpdateParticipants = function (db, callback) {
