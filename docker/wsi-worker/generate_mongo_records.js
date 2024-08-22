@@ -83,6 +83,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
+								stain: { type: "other" },
 								slideType: slideTypeFull
 							});
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
@@ -130,6 +131,7 @@ const addAndUpdateParticipants = function (db, callback) {
 						slides: [{
 							_id: fileUUID,
 							slideName: slideName,
+							stain: { type: "other" },
 							slideType: slideTypeFull,
 						}]
 					};
