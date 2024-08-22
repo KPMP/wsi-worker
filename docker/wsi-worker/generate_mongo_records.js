@@ -139,7 +139,7 @@ const addAndUpdateParticipants = function (db, callback) {
 						callback();
 					});
 				} else {
-					console.log("Here")
+					console.log(slideType)
 					console.log("***** ERROR: Unable to find stain type *****");
 					callback();
 				}
