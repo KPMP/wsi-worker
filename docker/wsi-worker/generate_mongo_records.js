@@ -8,7 +8,7 @@ const dbName = 'knowledgeEnvironment';
 const kpmpId = process.argv[2];
 const slideName = process.argv[3];
 const fileUUID = process.argv[4];
-const slideType = process.argv[5];
+const slideType = process.argv[5].toUpperCase();
 const stainType = process.argv[6];
 const metadataFile = process.argv[7];
 
@@ -30,7 +30,7 @@ const addAndUpdateParticipants = function (db, callback) {
 		});
 
 		let slideTypeFull = "";
-		switch (slideType.toUpperCase()) {
+		switch (slideType) {
 			case "LM":
 				slideTypeFull = "(LM) Light Microscopy";
 				break;
@@ -63,7 +63,6 @@ const addAndUpdateParticipants = function (db, callback) {
 							exists = true;
 						}
 					});
-
 					if (!exists) {
 						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
 							slides.push({
@@ -81,7 +80,7 @@ const addAndUpdateParticipants = function (db, callback) {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
-								stain: stainsByType[stainType],
+								stain: { type: "other" },
 								slideType: slideTypeFull
 							});
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
@@ -102,8 +101,8 @@ const addAndUpdateParticipants = function (db, callback) {
 				callback()
 			});
 			if (docs.length === 0) {
-				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-
+				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
+					
 					let participantRecord = {
 						kpmp_id: kpmpId,
 						label: kpmpId,
@@ -111,12 +110,27 @@ const addAndUpdateParticipants = function (db, callback) {
 							_id: fileUUID,
 							slideName: slideName,
 							stain: stainsByType[stainType],
-							slideType: slideTypeFull
+							slideType: slideTypeFull,
+							metadata: metadata
 						}]
 					};
-					if (slideType === "LM") {
-						participantRecord.slides[0].metadata = metadata;
-					}
+
+					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
+					participantCollection.insertOne(participantRecord, function () {
+						callback();
+					});
+				}
+				else if (slideType === "EM") {
+					let participantRecord = {
+						kpmp_id: kpmpId,
+						label: kpmpId,
+						slides: [{
+							_id: fileUUID,
+							slideName: slideName,
+							stain: { type: "other" },
+							slideType: slideTypeFull,
+						}]
+					};
 
 					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
 					participantCollection.insertOne(participantRecord, function () {
