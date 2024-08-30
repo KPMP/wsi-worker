@@ -8,12 +8,16 @@ const dbName = 'knowledgeEnvironment';
 const kpmpId = process.argv[2];
 const slideName = process.argv[3];
 const fileUUID = process.argv[4];
-const stainType = process.argv[5];
-const metadataFile = process.argv[6];
-let rawdata = fs.readFileSync(metadataFile);
-let metadata = JSON.parse(rawdata);
+const slideType = process.argv[5].toUpperCase();
+const stainType = process.argv[6];
+const metadataFile = process.argv[7];
 
 const addAndUpdateParticipants = function (db, callback) {
+	let metadata = null;
+	if (slideType === "LM" && fs.existsSync(metadataFile)) {
+		let rawdata = fs.readFileSync(metadataFile);
+		metadata = JSON.parse(rawdata);
+	}
 
 	let stainCollection = db.collection("stains");
 
@@ -24,6 +28,21 @@ const addAndUpdateParticipants = function (db, callback) {
 		stainDocuments.forEach(stain => {
 			stainsByType[stain.type] = stain;
 		});
+
+		let slideTypeFull = "";
+		switch (slideType) {
+			case "LM":
+				slideTypeFull = "(LM) Light Microscopy";
+				break;
+			case "EM":
+				slideTypeFull = "(EM) Electron Microscopy";
+				break;
+			case "IF":
+				slideTypeFull = "(IF) Immunofluorescence";
+				break;
+			default:
+				break;
+		}
 
 		let participantCollection = db.collection("patients");
 
@@ -37,24 +56,33 @@ const addAndUpdateParticipants = function (db, callback) {
 					let added = false;
 
 					slides.forEach(slide => {
-						if (slide.slideName === slideName) {
+						if (slideType === "LM" && slide.slideName === slideName) {
 							slide = slide['metadata'] = metadata;
 							participantCollection.update({_id: doc._id }, { $set: { slides: slides }});
 							console.log("updated slide with metadata");
 							exists = true;
 						}
 					});
-
 					if (!exists) {
-						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-
+						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
 							slides.push({
 								_id: fileUUID,
 								slideName: slideName,
 								metadata: metadata,
-								stain: stainsByType[stainType]
+								stain: stainsByType[stainType],
+								slideType: slideTypeFull
 							});
-
+							console.log("--- adding new slide, fileUUID: " + fileUUID);
+							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
+							added = true;
+						}
+						else if (slideType === "EM") {
+							slides.push({
+								_id: fileUUID,
+								slideName: slideName,
+								stain: { type: "other" },
+								slideType: slideTypeFull
+							});
 							console.log("--- adding new slide, fileUUID: " + fileUUID);
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
@@ -73,16 +101,34 @@ const addAndUpdateParticipants = function (db, callback) {
 				callback()
 			});
 			if (docs.length === 0) {
-				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined) {
-
+				if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
+					
 					let participantRecord = {
 						kpmp_id: kpmpId,
 						label: kpmpId,
 						slides: [{
 							_id: fileUUID,
 							slideName: slideName,
-							metadata: metadata,
-							stain: stainsByType[stainType]
+							stain: stainsByType[stainType],
+							slideType: slideTypeFull,
+							metadata: metadata
+						}]
+					};
+
+					console.log("--- adding new participant and slides, KPMP_ID: " + kpmpId);
+					participantCollection.insertOne(participantRecord, function () {
+						callback();
+					});
+				}
+				else if (slideType === "EM") {
+					let participantRecord = {
+						kpmp_id: kpmpId,
+						label: kpmpId,
+						slides: [{
+							_id: fileUUID,
+							slideName: slideName,
+							stain: { type: "other" },
+							slideType: slideTypeFull,
 						}]
 					};
 
