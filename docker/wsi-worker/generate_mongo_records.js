@@ -6,7 +6,9 @@ const url = 'mongodb://delphinus-mongodb:27017';
 const dbName = 'knowledgeEnvironment';
 
 const kpmpId = process.argv[2];
-const slideName = process.argv[3];
+const fileName = process.argv[3].split(".");
+fileName.pop();
+const slideName = fileName.join(".");
 const fileUUID = process.argv[4];
 const slideType = process.argv[5].toUpperCase();
 const stainType = process.argv[6];

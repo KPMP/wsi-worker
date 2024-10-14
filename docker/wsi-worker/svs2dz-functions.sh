@@ -95,9 +95,9 @@ EOT
   
   cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
   if ! [ -L $ENV_LINK_DST_DIR/$3_files ]; then
-    ln -s $ENV_LINK_SRC_DIR/files_$1/$2_files $ENV_LINK_DST_DIR/$3_files
-    ln -s $ENV_LINK_SRC_DIR/files_$1/$2.dzi $ENV_LINK_DST_DIR/$3.dzi
-    ln -s $ENV_LINK_SRC_DIR/files_$1/tn_$2.jpeg $ENV_LINK_DST_DIR/tn_$3.jpeg
+    ln -s $ENV_LINK_SRC_DIR/files_$1/${$2%.*}_files $ENV_LINK_DST_DIR/$3_files
+    ln -s $ENV_LINK_SRC_DIR/files_$1/${$2%.*}.dzi $ENV_LINK_DST_DIR/$3.dzi
+    ln -s $ENV_LINK_SRC_DIR/files_$1/tn_${$2%.*}.jpeg $ENV_LINK_DST_DIR/tn_$3.jpeg
   fi
   
 EOT
@@ -111,7 +111,7 @@ run_link_file() {
 }
 
 extract_metadata() {
-  python3 /usr/sbin/extract_metadata.py $JOB_IN_DIR/$2.svs $JOB_OUT_DIR/metadata.json
+  python3 /usr/sbin/extract_metadata.py $JOB_IN_DIR/$2 $JOB_OUT_DIR/metadata.json
 }
 
 generate_mongo_records() {
