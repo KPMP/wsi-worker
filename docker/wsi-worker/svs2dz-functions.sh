@@ -4,6 +4,7 @@
 DID_ERROR=0
 JOB_IN_DIR=/data/job/in
 JOB_OUT_DIR=/data/job/out
+filename=$2
 
 print_help() {
   cat << EOL
@@ -69,11 +70,11 @@ validate_args() {
 
 call_vips() {
   mkdir -p $ENV_LINK_SRC_DIR/files_$1
-  echo "--- vips dzsave $JOB_IN_DIR/$2 $ENV_LINK_SRC_DIR/files_$1/$2"
-  vips dzsave $JOB_IN_DIR/$2 $ENV_LINK_SRC_DIR/files_$1/$2
+  echo "--- vips dzsave $JOB_IN_DIR/${filename%.*} $ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
+  vips dzsave "$JOB_IN_DIR/$2" "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
   
   # Copy a consistently-well-sized DZ file out as our thumbnail
-  cp $ENV_LINK_SRC_DIR/files_$1/${$2%.*}_files/8/0_0.jpeg $ENV_LINK_SRC_DIR/files_$1/tn_${$2%.*}.jpeg
+  cp "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}_files/8/0_0.jpeg" "$ENV_LINK_SRC_DIR/files_$1/tn_${filename%.*}.jpeg"
 }
 
 update_link_file() {
@@ -95,9 +96,9 @@ EOT
   
   cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
   if ! [ -L $ENV_LINK_DST_DIR/$3_files ]; then
-    ln -s $ENV_LINK_SRC_DIR/files_$1/${$2%.*}_files $ENV_LINK_DST_DIR/$3_files
-    ln -s $ENV_LINK_SRC_DIR/files_$1/${$2%.*}.dzi $ENV_LINK_DST_DIR/$3.dzi
-    ln -s $ENV_LINK_SRC_DIR/files_$1/tn_${$2%.*}.jpeg $ENV_LINK_DST_DIR/tn_$3.jpeg
+    ln -s "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}_files" "$ENV_LINK_DST_DIR/$3_files"
+    ln -s $ENV_LINK_SRC_DIR/files_$1/${filename%.*}.dzi" "$ENV_LINK_DST_DIR/$3.dzi"
+    ln -s $ENV_LINK_SRC_DIR/files_$1/tn_${filename%.*}.jpeg" "$ENV_LINK_DST_DIR/tn_$3.jpeg"
   fi
   
 EOT
@@ -111,7 +112,7 @@ run_link_file() {
 }
 
 extract_metadata() {
-  python3 /usr/sbin/extract_metadata.py $JOB_IN_DIR/$2 $JOB_OUT_DIR/metadata.json
+  python3 /usr/sbin/extract_metadata.py "$JOB_IN_DIR/$2" "$JOB_OUT_DIR/metadata.json"
 }
 
 generate_mongo_records() {
