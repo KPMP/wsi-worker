@@ -69,8 +69,8 @@ validate_args() {
 }
 
 call_vips() {
-  mkdir -p $ENV_LINK_SRC_DIR/files_$1
-  echo "--- vips dzsave $JOB_IN_DIR/${filename%.*} $ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
+  mkdir -p "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
+  echo "--- vips dzsave $JOB_IN_DIR/$2 $ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
   vips dzsave "$JOB_IN_DIR/$2" "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}"
   
   # Copy a consistently-well-sized DZ file out as our thumbnail
@@ -97,8 +97,8 @@ EOT
   cat <<EOT >> $JOB_OUT_DIR/svs2dz/link.sh
   if ! [ -L $ENV_LINK_DST_DIR/$3_files ]; then
     ln -s "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}_files" "$ENV_LINK_DST_DIR/$3_files"
-    ln -s $ENV_LINK_SRC_DIR/files_$1/${filename%.*}.dzi" "$ENV_LINK_DST_DIR/$3.dzi"
-    ln -s $ENV_LINK_SRC_DIR/files_$1/tn_${filename%.*}.jpeg" "$ENV_LINK_DST_DIR/tn_$3.jpeg"
+    ln -s "$ENV_LINK_SRC_DIR/files_$1/${filename%.*}.dzi" "$ENV_LINK_DST_DIR/$3.dzi"
+    ln -s "$ENV_LINK_SRC_DIR/files_$1/tn_${filename%.*}.jpeg" "$ENV_LINK_DST_DIR/tn_$3.jpeg"
   fi
   
 EOT
