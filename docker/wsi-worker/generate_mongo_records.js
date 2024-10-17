@@ -62,6 +62,10 @@ const addAndUpdateParticipants = function (db, callback) {
 							console.log("updated slide with metadata");
 							exists = true;
 						}
+                        else if ((slideType === "EM" || slideType === "IF") && slide.slideName === slideName){
+                            console.log("Slide already exists. Skipping..")
+                            exists = true;
+                        }
 					});
 					if (!exists) {
 						if (stainsByType[stainType] !== null && stainsByType[stainType] !== undefined && slideType === "LM") {
@@ -72,7 +76,7 @@ const addAndUpdateParticipants = function (db, callback) {
 								stain: stainsByType[stainType],
 								slideType: slideTypeFull
 							});
-							console.log("--- adding new slide, fileUUID: " + fileUUID);
+							console.log("--- adding new LM slide, fileUUID: " + fileUUID);
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						}
@@ -83,7 +87,7 @@ const addAndUpdateParticipants = function (db, callback) {
 								stain: { type: "other" },
 								slideType: slideTypeFull
 							});
-							console.log("--- adding new slide, fileUUID: " + fileUUID);
+							console.log("--- adding new EM slide, fileUUID: " + fileUUID);
 							participantCollection.update({ _id: doc._id }, { $set: { slides: slides } });
 							added = true;
 						} else {
