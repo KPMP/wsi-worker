@@ -33,7 +33,7 @@ To initialize the `.env` file, copy `wsi-worker/scripts/.env.example` and modify
 3. `ENV_LINK_DST_DIR`: container DPR data directory, defaults to `/data/deepZoomImages`
 4. `ENV_LINK_SRC_DIR_HOST`: Host KE data directory, maps to `ENV_LINK_SRC_DIR`
 5. `ENV_LINK_DST_DIR_HOST`: Host DPR data directory, maps to `ENV_LINK_DST_DIR`
-6. `ENV_JOB_IN_DIR`: the host directory holding the source SVS files to be handled by the job
+6. `ENV_JOB_IN_DIR`: the host directory holding the source files to be handled by the job
 7. `ENV_JOB_OUT_DIR`: the host directory to hold `link.sh` and `error.txt` if errors are logged
 
 ### Outputs
