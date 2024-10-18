@@ -1,4 +1,4 @@
-FROM kingstonduo/wsi-worker-base:KPMP-5584_take-in-full-filename
+FROM kingstonduo/wsi-worker-base:latest
 
 ARG imageName="wsi-worker"
 ARG imageDescription="Compiles SVS images to DeepZoom and links in DPR"
