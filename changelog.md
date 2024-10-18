@@ -4,6 +4,7 @@
 Brief summary of what's in this release:
 - updated scripts to take in slide type information so that we can add non-svs images
 - updated scripts to handle non-svs image pyramid building
+- update scripts to take in any file extension
 
 ### Breaking changes
 
