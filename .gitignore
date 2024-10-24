@@ -7,3 +7,4 @@ data-out/*
 .idea
 node_modules
 package-lock.json
+.java-version
