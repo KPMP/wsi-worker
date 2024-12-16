@@ -14,3 +14,5 @@ Breaking changes include any database updates needed, if we need to edit any fil
 ### Non-breaking changes
 
 Just a place to keep track of things that have changed in the code that we may want to pay special attention to when smoke testing, etc.
+
+- Added a script that will check the filesystem against mongo to see if all files in either location are seen.
